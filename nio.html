@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title> МОЕ БИО| Анонимный био</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+      color: #0ff;
+      text-align: center;
+    }
+
+    body {
+      background: #000;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.85);
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      padding-top: 80px;
+    }
+
+    .glitch {
+      font-size: 3rem;
+      animation: glitch 1.5s infinite;
+      color: #fff;
+      text-shadow: 2px 0 red, -2px 0 cyan;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red, -2px 0 cyan; }
+      20% { text-shadow: -2px 0 red, 2px 0 cyan; }
+      40% { text-shadow: 2px 2px blue, -2px -2px lime; }
+      60% { text-shadow: -2px 2px blue, 2px -2px lime; }
+      80% { text-shadow: 0 0 2px red, 0 0 2px cyan; }
+      100% { text-shadow: 2px 0 red, -2px 0 cyan; }
+    }
+
+    .bio {
+      margin: 2rem auto;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      backdrop-filter: blur(6px);
+    }
+
+    .buttons a {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 24px;
+      border: 2px solid #0ff;
+      border-radius: 10px;
+      color: #0ff;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .buttons a:hover {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    .music-button {
+      margin-top: 20px;
+      background: transparent;
+      color: #0ff;
+      border: 1px solid #0ff;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    iframe {
+      display: none;
+    }
+
+    .footer {
+      margin-top: 50px;
+      font-size: 0.75rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="overlay"></div>
+  <div class="content">
+    <h1 class="glitch">CRASTYVAY</h1>
+    <div class="bio">
+      <p>Анонимный пользователь, программист, геймер, приколист </p>
+      <p>Заинтересовал? Вот мои соцсети:</p>
+      <div class="buttons">
+        <a href="https://t.me/+NlUMgQ71OQUzNWY0" target="_blank">ТГ Канал</a>
+        <a href="https://github.com/crastyway" target="_blank">GitHub</a>
+        <a href="https://discord.gg/FTSZDs3P" target="_blank">ДС Сервер</a>
+        <a href="https://www.youtube.com/@CRASTYVAY" target="_blank">Канал</a>
+      </div>
+      <button class="music-button" onclick="playMusic()">НАЖМИ</button>
+      <iframe id="ytplayer" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
+    </div>
+    <div class="footer">© 2025 crastyvay | Мы не одни</div>
+  </div>
+
+  <script>
+    function playMusic() {
+      const iframe = document.getElementById('ytplayer');
+      iframe.src = "https://www.youtube.com/embed/dOl4NvlPCdo?autoplay=1&loop=1&playlist=dOl4NvlPCdo";
+    }
+
+    // Анимация частиц
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    for (let i = 0; i < 120; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5,
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0ff";
+
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+
+        // отражение от границ
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
